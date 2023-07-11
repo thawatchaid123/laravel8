@@ -1,17 +1,19 @@
 <html>
+   <style>
+        img{
+           width: 300 ;
+        }
+    </style>
 <body>
-<h2> ธวัชชัย ฮวบขุนทด</h2>
+    <h1>  ธวัชชัย ฮวบขุนทด  </h1>
+    ant <a href="newgallery/ant"><img src="{{ $ant }}" alt="ant"> </a>
 
-<a href="gallery/ant" >
-มด<img src = "{{$ant}}"  alt="Image" style="width:200px;height:100px;" ></a>
-<a href="gallery/bird" >
-นก<img src = "{{$bird}}" alt="Image" style="width:200px;height:100px;" ></a>
-<a href="gallery/cat" >
-เสือ<img src = "{{$cat}}"  alt="Image" style="width:200px;height:100px;" ></a>
-<a href="gallery/god" >
-สายฟ้า<img src = "{{$god}}" alt="Image" style="width:200px;height:100px;" ></a>
-<a href="gallery/spider" >
-แมงมุม<img src = "{{$spider}}" alt="Image" style="width:200px;height:100px;" ></a>
+    bird<a href="newgallery/bird"><img src="{{ $bird }}" alt="bird"> </a>
 
+    cat<a href="newgallery/cat"><img src="{{ $cat }}" alt="cat"> </a>
+
+    god<a href="#"><img src="{{ $god }}" alt="god"> </a>
+    
+    spider<a href="#"><img src="{{ $spider }}" alt="spider"></a>
 </body>
 </html>
