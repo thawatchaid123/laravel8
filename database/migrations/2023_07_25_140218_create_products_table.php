@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTomTable extends Migration
+class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateTomTable extends Migration
      */
     public function up()
     {
-        Schema::create('tom', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            
-            $table->integer('age')->nullable();
-            $table->float('weight',16,2)->nullable();          
-            $table->string('email')->nullable();
-            $table->date('date')->nullable();
-            $table->text('name')->nullable();
+
+        $table->string('title')->nullable();
+        $table->text('content')->nullable();
+        $table->float('price')->nullable();
+        $table->string('photo')->nullable();
+        $table->integer('stock')->nullable();
+
+
         });
     }
 
@@ -32,6 +34,6 @@ class CreateTomTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tom');
+        Schema::dropIfExists('products');
     }
 }
