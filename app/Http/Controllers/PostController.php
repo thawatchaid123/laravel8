@@ -1,14 +1,14 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Http\Controllers;
 
-use DummyRootNamespaceHttp\Requests;
-use DummyRootNamespaceHttp\Controllers\Controller;
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
 
-use DummyRootNamespace{{modelNamespace}}{{modelName}};
+use App\Models\Post;
 use Illuminate\Http\Request;
 
-class DummyClass extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +18,19 @@ class DummyClass extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('search');
-        $perPage = {{pagination}};
+        $perPage = 25;
 
         if (!empty($keyword)) {
-            ${{crudName}} = {{modelName}}::{{whereSnippet}}latest()->paginate($perPage);
+            $post = Post::where('title', 'LIKE', "%$keyword%")
+                ->orWhere('content', 'LIKE', "%$keyword%")
+                ->orWhere('category', 'LIKE', "%$keyword%")
+                ->orWhere('user_id', 'LIKE', "%$keyword%")
+                ->latest()->paginate($perPage);
         } else {
-            ${{crudName}} = {{modelName}}::latest()->paginate($perPage);
+            $post = Post::latest()->paginate($perPage);
         }
 
-        return view('{{viewPath}}{{viewName}}.index', compact('{{crudName}}'));
+        return view('post.index', compact('post'));
     }
 
     /**
@@ -36,7 +40,7 @@ class DummyClass extends Controller
      */
     public function create()
     {
-        return view('{{viewPath}}{{viewName}}.create');
+        return view('post.create');
     }
 
     /**
@@ -48,12 +52,12 @@ class DummyClass extends Controller
      */
     public function store(Request $request)
     {
-        {{validationRules}}
+        
         $requestData = $request->all();
-        {{fileSnippet}}
-        {{modelName}}::create($requestData);
+        
+        Post::create($requestData);
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} added!');
+        return redirect('post')->with('flash_message', 'Post added!');
     }
 
     /**
@@ -65,9 +69,9 @@ class DummyClass extends Controller
      */
     public function show($id)
     {
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+        $post = Post::findOrFail($id);
 
-        return view('{{viewPath}}{{viewName}}.show', compact('{{crudNameSingular}}'));
+        return view('post.show', compact('post'));
     }
 
     /**
@@ -79,9 +83,9 @@ class DummyClass extends Controller
      */
     public function edit($id)
     {
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+        $post = Post::findOrFail($id);
 
-        return view('{{viewPath}}{{viewName}}.edit', compact('{{crudNameSingular}}'));
+        return view('post.edit', compact('post'));
     }
 
     /**
@@ -94,13 +98,13 @@ class DummyClass extends Controller
      */
     public function update(Request $request, $id)
     {
-        {{validationRules}}
+        
         $requestData = $request->all();
-        {{fileSnippet}}
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
-        ${{crudNameSingular}}->update($requestData);
+        
+        $post = Post::findOrFail($id);
+        $post->update($requestData);
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} updated!');
+        return redirect('post')->with('flash_message', 'Post updated!');
     }
 
     /**
@@ -112,8 +116,8 @@ class DummyClass extends Controller
      */
     public function destroy($id)
     {
-        {{modelName}}::destroy($id);
+        Post::destroy($id);
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} deleted!');
+        return redirect('post')->with('flash_message', 'Post deleted!');
     }
 }

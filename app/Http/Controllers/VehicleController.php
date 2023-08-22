@@ -1,14 +1,14 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Http\Controllers;
 
-use DummyRootNamespaceHttp\Requests;
-use DummyRootNamespaceHttp\Controllers\Controller;
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
 
-use DummyRootNamespace{{modelNamespace}}{{modelName}};
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
-class DummyClass extends Controller
+class VehicleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +18,21 @@ class DummyClass extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('search');
-        $perPage = {{pagination}};
+        $perPage = 25;
 
         if (!empty($keyword)) {
-            ${{crudName}} = {{modelName}}::{{whereSnippet}}latest()->paginate($perPage);
+            $vehicle = Vehicle::where('brand', 'LIKE', "%$keyword%")
+                ->orWhere('serie', 'LIKE', "%$keyword%")
+                ->orWhere('color', 'LIKE', "%$keyword%")
+                ->orWhere('year', 'LIKE', "%$keyword%")
+                ->orWhere('mileage', 'LIKE', "%$keyword%")
+                ->orWhere('user_id', 'LIKE', "%$keyword%")
+                ->latest()->paginate($perPage);
         } else {
-            ${{crudName}} = {{modelName}}::latest()->paginate($perPage);
+            $vehicle = Vehicle::latest()->paginate($perPage);
         }
 
-        return view('{{viewPath}}{{viewName}}.index', compact('{{crudName}}'));
+        return view('vehicle.index', compact('vehicle'));
     }
 
     /**
@@ -36,7 +42,7 @@ class DummyClass extends Controller
      */
     public function create()
     {
-        return view('{{viewPath}}{{viewName}}.create');
+        return view('vehicle.create');
     }
 
     /**
@@ -48,12 +54,12 @@ class DummyClass extends Controller
      */
     public function store(Request $request)
     {
-        {{validationRules}}
+        
         $requestData = $request->all();
-        {{fileSnippet}}
-        {{modelName}}::create($requestData);
+        
+        Vehicle::create($requestData);
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} added!');
+        return redirect('vehicle')->with('flash_message', 'Vehicle added!');
     }
 
     /**
@@ -65,9 +71,9 @@ class DummyClass extends Controller
      */
     public function show($id)
     {
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+        $vehicle = Vehicle::findOrFail($id);
 
-        return view('{{viewPath}}{{viewName}}.show', compact('{{crudNameSingular}}'));
+        return view('vehicle.show', compact('vehicle'));
     }
 
     /**
@@ -79,9 +85,9 @@ class DummyClass extends Controller
      */
     public function edit($id)
     {
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+        $vehicle = Vehicle::findOrFail($id);
 
-        return view('{{viewPath}}{{viewName}}.edit', compact('{{crudNameSingular}}'));
+        return view('vehicle.edit', compact('vehicle'));
     }
 
     /**
@@ -94,13 +100,13 @@ class DummyClass extends Controller
      */
     public function update(Request $request, $id)
     {
-        {{validationRules}}
+        
         $requestData = $request->all();
-        {{fileSnippet}}
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
-        ${{crudNameSingular}}->update($requestData);
+        
+        $vehicle = Vehicle::findOrFail($id);
+        $vehicle->update($requestData);
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} updated!');
+        return redirect('vehicle')->with('flash_message', 'Vehicle updated!');
     }
 
     /**
@@ -112,8 +118,8 @@ class DummyClass extends Controller
      */
     public function destroy($id)
     {
-        {{modelName}}::destroy($id);
+        Vehicle::destroy($id);
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} deleted!');
+        return redirect('vehicle')->with('flash_message', 'Vehicle deleted!');
     }
 }

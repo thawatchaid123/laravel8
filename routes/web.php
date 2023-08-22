@@ -5,6 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StaffController;
 use App\Models\Staff;
+use App\Http\Controllers\PostController;
+
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleController;
+use App\Models\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,13 +78,9 @@ Route::get("/gallery/cat", function () {
     return view("test/cat", compact("cat"));
 });
 
-Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 Route::get("/teacher" , function (){
 	return view("teacher");
 });
-});
-
-
 
 Route::get("/student" , function (){
 	return view("student");
@@ -148,12 +150,8 @@ Route::get('/covid19', [ Covid19Controller::class,"index" ]);
  Route::resource('/staff', StaffController::class );
  
 
- Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+ Route::resource('post', PostController::class);
 
-require __DIR__ . '/auth.php';
-
-
-
-
+ Route::resource('profile', ProfileController::class);
+Route::resource('user', UserController::class);
+Route::resource('vehicle', VehicleController::class);

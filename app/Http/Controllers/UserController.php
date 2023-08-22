@@ -1,14 +1,14 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Http\Controllers;
 
-use DummyRootNamespaceHttp\Requests;
-use DummyRootNamespaceHttp\Controllers\Controller;
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
 
-use DummyRootNamespace{{modelNamespace}}{{modelName}};
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class DummyClass extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +18,21 @@ class DummyClass extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('search');
-        $perPage = {{pagination}};
+        $perPage = 25;
 
         if (!empty($keyword)) {
-            ${{crudName}} = {{modelName}}::{{whereSnippet}}latest()->paginate($perPage);
+            $user = User::where('name', 'LIKE', "%$keyword%")
+                ->orWhere('email', 'LIKE', "%$keyword%")
+                ->orWhere('email_verified_at', 'LIKE', "%$keyword%")
+                ->orWhere('password', 'LIKE', "%$keyword%")
+                ->orWhere('remember_token', 'LIKE', "%$keyword%")
+                ->orWhere('role', 'LIKE', "%$keyword%")
+                ->latest()->paginate($perPage);
         } else {
-            ${{crudName}} = {{modelName}}::latest()->paginate($perPage);
+            $user = User::latest()->paginate($perPage);
         }
 
-        return view('{{viewPath}}{{viewName}}.index', compact('{{crudName}}'));
+        return view('user.index', compact('user'));
     }
 
     /**
@@ -36,7 +42,7 @@ class DummyClass extends Controller
      */
     public function create()
     {
-        return view('{{viewPath}}{{viewName}}.create');
+        return view('user.create');
     }
 
     /**
@@ -48,12 +54,12 @@ class DummyClass extends Controller
      */
     public function store(Request $request)
     {
-        {{validationRules}}
+        
         $requestData = $request->all();
-        {{fileSnippet}}
-        {{modelName}}::create($requestData);
+        
+        User::create($requestData);
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} added!');
+        return redirect('user')->with('flash_message', 'User added!');
     }
 
     /**
@@ -65,9 +71,9 @@ class DummyClass extends Controller
      */
     public function show($id)
     {
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+        $user = User::findOrFail($id);
 
-        return view('{{viewPath}}{{viewName}}.show', compact('{{crudNameSingular}}'));
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -79,9 +85,9 @@ class DummyClass extends Controller
      */
     public function edit($id)
     {
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+        $user = User::findOrFail($id);
 
-        return view('{{viewPath}}{{viewName}}.edit', compact('{{crudNameSingular}}'));
+        return view('user.edit', compact('user'));
     }
 
     /**
@@ -94,13 +100,13 @@ class DummyClass extends Controller
      */
     public function update(Request $request, $id)
     {
-        {{validationRules}}
+        
         $requestData = $request->all();
-        {{fileSnippet}}
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
-        ${{crudNameSingular}}->update($requestData);
+        
+        $user = User::findOrFail($id);
+        $user->update($requestData);
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} updated!');
+        return redirect('user')->with('flash_message', 'User updated!');
     }
 
     /**
@@ -112,8 +118,8 @@ class DummyClass extends Controller
      */
     public function destroy($id)
     {
-        {{modelName}}::destroy($id);
+        User::destroy($id);
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} deleted!');
+        return redirect('user')->with('flash_message', 'User deleted!');
     }
 }
