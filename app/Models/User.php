@@ -10,6 +10,17 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+
+    public function userLeaveRequests()
+    {
+        return $this->hasMany(LeaveRequest::class, 'user_id');
+    }
+
+    public function approverLeaveRequests()
+    {
+        return $this->hasMany(LeaveRequest::class, 'approver_id');
+    }
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -25,6 +36,7 @@ class User extends Authenticatable
 
     ];
 
+     
     /**
      * The attributes that should be hidden for serialization.
      *

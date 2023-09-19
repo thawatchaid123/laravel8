@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StaffController;
 use App\Models\Staff;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -158,4 +159,6 @@ require __DIR__ . '/auth.php';
 
 
 Route::resource('post', 'PostController');
+
+
 
